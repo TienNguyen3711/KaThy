@@ -1,7 +1,7 @@
 // magic.js — Sphere → Auto Photo Reveal → Particle Gallery
 // Photos loaded dynamically from /api/photos, order randomized each run
 (() => {
-    const MUSIC_URL = "./Mê Ry Chí Mớt_audio.mp3";
+    const MUSIC_URL = "./Em Không Lẻ Loi.mp3";
     let bgMusic = null;
     const loader = new THREE.TextureLoader();
 
