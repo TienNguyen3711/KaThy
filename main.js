@@ -267,7 +267,7 @@ window.addEventListener('load', ()=>{
   setTimeout(()=>{
     // reveal bottom-left description (keep right image visible)
     // replaceRightMedia(); // intentionally disabled so hero image remains shown
-    revealDescriptiveText(`Ka Thyy - Chưa biết nhau nhiều,
+    revealDescriptiveText(`Ka Thy - Chưa biết nhau nhiều,
   nhưng mình nghĩ bạn xứng đáng có một thứ gì đó đặc biệt.
   And I have a special gift for you 😁`, 200);
   }, 3200);

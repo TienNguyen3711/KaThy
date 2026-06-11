@@ -347,13 +347,13 @@
             photoScene.add(mesh); photoMeshes.push(mesh);
         });
 
-        // "For Ka Thyy" text
+        // "For Ka Thy" text
         mc = document.createElement("canvas"); mc.width = 1024; mc.height = 256;
         mCtx = mc.getContext("2d");
         mCtx.clearRect(0, 0, 1024, 256);
         await document.fonts.load('700 120px "Dancing Script"');
         mCtx.font = '700 120px "Dancing Script", cursive'; mCtx.textAlign = "center";
-        const _m = mCtx.measureText("For Ka Thyy");
+        const _m = mCtx.measureText("For Ka Thy");
         msgTextX = Math.round(512 - _m.width / 2) - 8;
         msgTextW = Math.round(_m.width) + 16;
         mTex = new THREE.CanvasTexture(mc);
@@ -362,12 +362,12 @@
         msgMesh.position.set(0, -58, 0); msgMesh.visible = false;
         scene.add(msgMesh);
 
-        // Subtitle: "Cảm ơn Ka Thyy..."
+        // Subtitle: "Cảm ơn Ka Thy..."
         const subMc = document.createElement("canvas"); subMc.width = 1024; subMc.height = 160;
         const subCtx = subMc.getContext("2d");
         subCtx.font = '700 36px "Dancing Script", cursive';
         subCtx.textAlign = "center"; subCtx.fillStyle = "#88CCFF";
-        subCtx.fillText("Cảm ơn Ka Thyy đã cho tôi", 512, 60);
+        subCtx.fillText("Cảm ơn Ka Thy đã cho mình", 512, 60);
         subCtx.fillText("những kỉ niệm đáng nhớ", 512, 120);
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
@@ -512,7 +512,7 @@
                 mCtx.textAlign = "center";
                 mCtx.fillStyle = "#FFFFFF";
                 mCtx.shadowColor = "#00AAFF"; mCtx.shadowBlur = 35;
-                mCtx.fillText("For Ka Thyy", 512, 160);
+                mCtx.fillText("For Ka Thy", 512, 160);
                 mCtx.restore();
                 mTex.needsUpdate = true;
             }
