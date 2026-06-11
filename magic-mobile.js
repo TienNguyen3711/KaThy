@@ -753,7 +753,7 @@
         if (btn) btn.style.display = "none";
 
         bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0;
-        bgMusic.muted = true; bgMusic.currentTime = 58;
+        bgMusic.muted = true; bgMusic.currentTime = 59; // Bắt đầu từ 59s để bỏ phần intro dài
         bgMusic.play().then(() => { bgMusic.muted = false; bgMusic.volume = 1.0; }).catch(() => {
             document.addEventListener('click', () => { bgMusic.muted = false; bgMusic.play().catch(() => {}); }, { once: true });
         });

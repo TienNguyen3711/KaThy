@@ -763,7 +763,7 @@
 
         // Nhạc — play muted trước (Chrome cho phép), unmute ngay sau
         if (!bgMusic) { bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0; }
-        bgMusic.muted = true; bgMusic.currentTime = 58; // Bắt đầu từ 58s để bỏ phần intro yên tĩnh
+        bgMusic.muted = true; bgMusic.currentTime = 59; // Bắt đầu từ 58s để bỏ phần intro yên tĩnh
         bgMusic.play().then(() => { bgMusic.muted = false; bgMusic.volume = 1.0; }).catch(() => {
             document.addEventListener('click', () => { bgMusic.muted = false; bgMusic.play().catch(() => {}); }, { once: true });
         });
