@@ -10,15 +10,15 @@ const IMG_RE   = /\.(jpe?g|png|webp|gif)$/i;
 // Serve Christmas---Amber files (index.html, magic.js, ...)
 app.use(express.static(__dirname));
 
-// Serve ảnh trong folder Kathy tại /kathy/
-app.use('/kathy', express.static(KATHY));
+// Serve ảnh trong folder photos tại /photos/
+app.use('/photos', express.static(KATHY));
 
-// API: trả danh sách ảnh trong Kathy (server sort, client sẽ shuffle)
+// API: trả danh sách ảnh trong photos
 app.get('/api/photos', (_req, res) => {
     try {
         const files = fs.readdirSync(KATHY)
             .filter(f => IMG_RE.test(f))
-            .map(f => `/kathy/${encodeURIComponent(f)}`);
+            .map(f => `/photos/${encodeURIComponent(f)}`);
         res.json(files);
     } catch (e) {
         res.status(500).json({ error: e.message });
