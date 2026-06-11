@@ -766,6 +766,9 @@
         startTime = Date.now();
         init3D();
         window.addEventListener("resize", resizeToContainer);
+        window.addEventListener("orientationchange", () => {
+            setTimeout(resizeToContainer, 300);
+        });
 
         // ── Gyroscope (request permission on first touch for iOS) ──
         const onGyro = e => { rawGamma = e.gamma || 0; rawBeta = e.beta || 0; };
