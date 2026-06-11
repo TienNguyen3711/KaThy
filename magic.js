@@ -22,7 +22,7 @@
     let finaleStarted = false, finalePhaseStart = 0;
     let cloudStarted = false, cloudStartTime = 0;
 
-    let heartFiles = ["/final.png"];
+    let heartFiles = ["final.png"];
     function getGalleryImageCount() { return Math.max(1, heartFiles.length); }
 
     // ── Glow textures ──────────────────────────────────────────────
