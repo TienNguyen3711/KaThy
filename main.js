@@ -278,20 +278,22 @@ function playMagicIntro() {
     const q1    = document.getElementById('introQ1');
     const q2    = document.getElementById('introQ2');
     const q3    = document.getElementById('introQ3');
+    const q4    = document.getElementById('introQ4');
     const intro = document.getElementById('magic-intro');
 
     if (!q1) { window.dispatchEvent(new Event('magic-start')); return; }
 
     setTimeout(() => q1.classList.add('show'),  400);   // "Okay đừng shock."
-    setTimeout(() => q2?.classList.add('show'), 1600);  // "tôi đã làm cái website này cho bạn"
+    setTimeout(() => q2?.classList.add('show'), 1600);  // "mình đã làm cái website này cho bạn"
     setTimeout(() => q3?.classList.add('show'), 2800);  // "Bạn welcome nhé."
-    setTimeout(() => {                                   // cả 3 fade out
-        [q1, q2, q3].forEach(q => q?.classList.add('fade-out'));
-    }, 4500);
-    setTimeout(() => {                                   // bắt đầu magic
+    setTimeout(() => q4?.classList.add('show'), 4000);  // "Hãy xoay ngang..."
+    setTimeout(() => {                                   // tất cả fade out
+        [q1, q2, q3, q4].forEach(q => q?.classList.add('fade-out'));
+    }, 6000);
+    setTimeout(() => {                                   // bắt đầu magic (2s sau Q4)
         if (intro) intro.style.display = 'none';
         window.dispatchEvent(new Event('magic-start'));
-    }, 5500);
+    }, 7000);
 }
 
 (function () {
