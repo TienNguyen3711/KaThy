@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Frame Gallery — Video5.MP4</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #111;
+    color: #eee;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+  }
+  h1 { font-size: 18px; margin-bottom: 4px; color: #ffd700; }
+  .meta { font-size: 13px; color: #888; margin-bottom: 12px; }
+  .controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .controls input[type=range] { width: 160px; }
+  .controls label { font-size: 13px; color: #aaa; }
+  #searchBox {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #222;
+    color: #eee;
+    font-size: 13px;
+    width: 180px;
+  }
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--thumb-size, 200px), 1fr));
+    gap: 8px;
+  }
+  .card {
+    position: relative;
+    background: #1a1a1a;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .card:hover { border-color: #ffd700; transform: scale(1.02); }
+  .card.starred { border-color: #ff4d4d !important; }
+  .card img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    background: #000;
+  }
+  .card .info {
+    padding: 4px 6px;
+    font-size: 11px;
+    color: #888;
+    display: flex;
+    justify-content: space-between;
+  }
+  .card .star-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    border-radius: 4px;
+    color: #aaa;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px 5px;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .card.starred .star-btn { color: #ff4d4d; }
+  /* Lightbox */
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox img {
+    max-width: 92vw;
+    max-height: 82vh;
+    border-radius: 6px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  }
+  #lightbox .lb-info { font-size: 14px; color: #ccc; }
+  #lightbox .lb-close {
+    position: absolute;
+    top: 14px; right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #aaa;
+    background: none;
+    border: none;
+  }
+  #lightbox .lb-nav {
+    display: flex;
+    gap: 16px;
+  }
+  #lightbox .lb-nav button {
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    background: #333;
+    color: #eee;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  #lightbox .lb-nav button:hover { background: #555; }
+  #starred-panel {
+    position: fixed;
+    bottom: 16px; right: 16px;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 12px 16px;
+    min-width: 220px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 500;
+    font-size: 13px;
+  }
+  #starred-panel h2 { font-size: 13px; color: #ffd700; margin-bottom: 8px; }
+  #starred-list a {
+    display: block;
+    color: #adf;
+    text-decoration: none;
+    padding: 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #starred-list a:hover { color: #fff; }
+  #starred-panel .copy-btn {
+    margin-top: 8px;
+    width: 100%;
+    padding: 6px;
+    border-radius: 6px;
+    border: none;
+    background: #2a2a2a;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  #starred-panel .copy-btn:hover { background: #3a3a3a; }
+</style>
+</head>
+<body>
+
+<h1>🎞 Frame Gallery — Video5.MP4</h1>
+<div class="meta" id="metaLine"></div>
+
+<div class="controls">
+  <label>Kích thước thumb:
+    <input type="range" min="100" max="400" value="200" id="sizeSlider">
+    <span id="sizeLabel">200px</span>
+  </label>
+  <input type="text" id="searchBox" placeholder="Tìm theo thời gian (vd: 00:30)">
+  <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+    <input type="checkbox" id="starredOnly"> Chỉ hiện ảnh đã chọn
+  </label>
+</div>
+
+<div id="grid"></div>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <button class="lb-close" id="lbClose">✕</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-info" id="lbInfo"></div>
+  <div class="lb-nav">
+    <button id="lbPrev">← Trước</button>
+    <button id="lbStar">☆ Chọn ảnh này</button>
+    <button id="lbNext">Sau →</button>
+  </div>
+</div>
+
+<!-- Starred panel -->
+<div id="starred-panel">
+  <h2>⭐ Ảnh đã chọn (<span id="starredCount">0</span>)</h2>
+  <div id="starred-list"></div>
+  <button class="copy-btn" id="copyBtn">📋 Copy danh sách</button>
+</div>
+
+<script>
+const FRAMES = [{"file": "frame_000000_00m00.00s.jpg", "frame": 0, "time_s": 0.0, "label": "00:00.00"}, {"file": "frame_000030_00m01.00s.jpg", "frame": 30, "time_s": 1.0, "label": "00:01.00"}, {"file": "frame_000060_00m02.00s.jpg", "frame": 60, "time_s": 2.0, "label": "00:02.00"}, {"file": "frame_000090_00m03.00s.jpg", "frame": 90, "time_s": 3.0, "label": "00:03.00"}, {"file": "frame_000120_00m04.00s.jpg", "frame": 120, "time_s": 4.0, "label": "00:04.00"}, {"file": "frame_000150_00m05.00s.jpg", "frame": 150, "time_s": 5.0, "label": "00:05.00"}, {"file": "frame_000180_00m06.00s.jpg", "frame": 180, "time_s": 6.0, "label": "00:06.00"}, {"file": "frame_000210_00m07.00s.jpg", "frame": 210, "time_s": 7.0, "label": "00:07.00"}, {"file": "frame_000240_00m08.00s.jpg", "frame": 240, "time_s": 8.0, "label": "00:08.00"}, {"file": "frame_000270_00m09.00s.jpg", "frame": 270, "time_s": 9.0, "label": "00:09.00"}, {"file": "frame_000300_00m10.00s.jpg", "frame": 300, "time_s": 10.0, "label": "00:10.00"}, {"file": "frame_000330_00m11.00s.jpg", "frame": 330, "time_s": 11.0, "label": "00:11.00"}, {"file": "frame_000360_00m12.00s.jpg", "frame": 360, "time_s": 12.0, "label": "00:12.00"}, {"file": "frame_000390_00m13.00s.jpg", "frame": 390, "time_s": 13.0, "label": "00:13.00"}, {"file": "frame_000420_00m14.00s.jpg", "frame": 420, "time_s": 14.0, "label": "00:14.00"}, {"file": "frame_000450_00m15.00s.jpg", "frame": 450, "time_s": 15.0, "label": "00:15.00"}, {"file": "frame_000480_00m16.00s.jpg", "frame": 480, "time_s": 16.0, "label": "00:16.00"}, {"file": "frame_000510_00m17.00s.jpg", "frame": 510, "time_s": 17.0, "label": "00:17.00"}, {"file": "frame_000540_00m18.00s.jpg", "frame": 540, "time_s": 18.0, "label": "00:18.00"}, {"file": "frame_000570_00m19.00s.jpg", "frame": 570, "time_s": 19.0, "label": "00:19.00"}, {"file": "frame_000600_00m20.00s.jpg", "frame": 600, "time_s": 20.0, "label": "00:20.00"}, {"file": "frame_000630_00m21.00s.jpg", "frame": 630, "time_s": 21.0, "label": "00:21.00"}, {"file": "frame_000660_00m22.00s.jpg", "frame": 660, "time_s": 22.0, "label": "00:22.00"}, {"file": "frame_000690_00m23.00s.jpg", "frame": 690, "time_s": 23.0, "label": "00:23.00"}, {"file": "frame_000720_00m24.00s.jpg", "frame": 720, "time_s": 24.0, "label": "00:24.00"}, {"file": "frame_000750_00m25.00s.jpg", "frame": 750, "time_s": 25.0, "label": "00:25.00"}, {"file": "frame_000780_00m26.00s.jpg", "frame": 780, "time_s": 26.0, "label": "00:26.00"}, {"file": "frame_000810_00m27.00s.jpg", "frame": 810, "time_s": 27.0, "label": "00:27.00"}, {"file": "frame_000840_00m28.00s.jpg", "frame": 840, "time_s": 28.0, "label": "00:28.00"}];
+let starred   = new Set(JSON.parse(localStorage.getItem('starred') || '[]'));
+let lbIdx     = 0;
+let visibleFrames = [...FRAMES];
+
+function saveStarred() {
+  localStorage.setItem('starred', JSON.stringify([...starred]));
+}
+
+function renderGrid() {
+  const query  = document.getElementById('searchBox').value.trim().toLowerCase();
+  const onlyStar = document.getElementById('starredOnly').checked;
+
+  visibleFrames = FRAMES.filter(f => {
+    if (onlyStar && !starred.has(f.file)) return false;
+    if (query && !f.label.includes(query) && !f.file.includes(query)) return false;
+    return true;
+  });
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  visibleFrames.forEach((f, i) => {
+    const card = document.createElement('div');
+    card.className = 'card' + (starred.has(f.file) ? ' starred' : '');
+    card.dataset.idx = i;
+
+    card.innerHTML = `
+      <img src="${f.file}" loading="lazy" alt="${f.label}">
+      <div class="info">
+        <span>${f.label}</span>
+        <span>#${f.frame}</span>
+      </div>
+      <button class="star-btn" data-file="${f.file}">${starred.has(f.file) ? '❤️' : '🤍'}</button>
+    `;
+
+    card.querySelector('img').addEventListener('click', () => openLightbox(i));
+    card.querySelector('.star-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleStar(f.file, card, e.currentTarget);
+    });
+
+    grid.appendChild(card);
+  });
+
+  document.getElementById('metaLine').textContent =
+    `${visibleFrames.length} / ${FRAMES.length} frames  •  Video: Video5.MP4`;
+  renderStarredPanel();
+}
+
+function toggleStar(file, card, btn) {
+  if (starred.has(file)) {
+    starred.delete(file);
+    card.classList.remove('starred');
+    btn.textContent = '🤍';
+  } else {
+    starred.add(file);
+    card.classList.add('starred');
+    btn.textContent = '❤️';
+  }
+  saveStarred();
+  renderStarredPanel();
+  if (document.getElementById('starredOnly').checked) renderGrid();
+}
+
+function renderStarredPanel() {
+  const list = document.getElementById('starred-list');
+  document.getElementById('starredCount').textContent = starred.size;
+  list.innerHTML = '';
+  [...starred].forEach(file => {
+    const a = document.createElement('a');
+    a.href = file;
+    a.download = file;
+    a.textContent = file;
+    list.appendChild(a);
+  });
+}
+
+function openLightbox(i) {
+  lbIdx = i;
+  const f = visibleFrames[i];
+  document.getElementById('lbImg').src  = f.file;
+  document.getElementById('lbInfo').textContent = `${f.label}  |  frame #${f.frame}  |  ${f.file}`;
+  const lb = document.getElementById('lightbox');
+  lb.classList.add('open');
+  updateLbStar();
+}
+
+function updateLbStar() {
+  const f = visibleFrames[lbIdx];
+  if (!f) return;
+  document.getElementById('lbStar').textContent =
+    starred.has(f.file) ? '❤️ Bỏ chọn' : '🤍 Chọn ảnh này';
+}
+
+document.getElementById('lbClose').addEventListener('click', () =>
+  document.getElementById('lightbox').classList.remove('open'));
+
+document.getElementById('lbPrev').addEventListener('click', () => {
+  lbIdx = (lbIdx - 1 + visibleFrames.length) % visibleFrames.length;
+  openLightbox(lbIdx);
+});
+
+document.getElementById('lbNext').addEventListener('click', () => {
+  lbIdx = (lbIdx + 1) % visibleFrames.length;
+  openLightbox(lbIdx);
+});
+
+document.getElementById('lbStar').addEventListener('click', () => {
+  const f = visibleFrames[lbIdx];
+  if (!f) return;
+  starred.has(f.file) ? starred.delete(f.file) : starred.add(f.file);
+  saveStarred();
+  updateLbStar();
+  renderStarredPanel();
+  renderGrid();
+});
+
+document.addEventListener('keydown', (e) => {
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'ArrowRight') document.getElementById('lbNext').click();
+  if (e.key === 'ArrowLeft')  document.getElementById('lbPrev').click();
+  if (e.key === 'Escape')     lb.classList.remove('open');
+  if (e.key === ' ')          document.getElementById('lbStar').click();
+});
+
+// Thumbnail size slider
+const slider = document.getElementById('sizeSlider');
+slider.addEventListener('input', () => {
+  const v = slider.value + 'px';
+  document.getElementById('grid').style.setProperty('--thumb-size', v);
+  document.getElementById('sizeLabel').textContent = v;
+});
+
+// Search
+document.getElementById('searchBox').addEventListener('input', renderGrid);
+document.getElementById('starredOnly').addEventListener('change', renderGrid);
+
+// Copy starred list
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const text = [...starred].join('\n');
+  navigator.clipboard.writeText(text).then(() => alert('Đã copy ' + starred.size + ' tên file!'));
+});
+
+// Lightbox click outside
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('lightbox'))
+    document.getElementById('lightbox').classList.remove('open');
+});
+
+renderGrid();
+</script>
+</body>
+</html>

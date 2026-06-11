@@ -4,7 +4,7 @@ const fs      = require('fs');
 
 const app      = express();
 const PORT     = 3000;
-const KATHY    = path.join(__dirname, '..', 'Kathy');
+const KATHY    = path.join(__dirname, 'photos');
 const IMG_RE   = /\.(jpe?g|png|webp|gif)$/i;
 
 // Serve Christmas---Amber files (index.html, magic.js, ...)
