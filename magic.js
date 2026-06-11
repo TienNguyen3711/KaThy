@@ -746,6 +746,7 @@
 
         // Nhạc
         bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0;
+        bgMusic.currentTime = 70;
         bgMusic.play().catch(() => {});
 
         // Fetch danh sách ảnh từ server, shuffle ngẫu nhiên
