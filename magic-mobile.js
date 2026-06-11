@@ -71,6 +71,7 @@
     let groupSphere, groupInner;
     const groupRings = [];
     let groupGallery = null;
+    let gyroGroup = null;
     let photoMeshes  = [];
     let msgMesh, mc, mCtx, mTex;
     let msgWriteStart = -1, msgTextX = 0, msgTextW = 0;
@@ -323,10 +324,12 @@
 
         groupSphere = makePointCloud(CFG.sphereCount, fibonacciSphere(CFG.sphereCount, CFG.sphereRadius), TEX.blue, 2.2);
         groupInner  = makePointCloud(CFG.innerCount,  fibonacciSphere(CFG.innerCount,  CFG.innerRadius),  TEX.cyan, 1.5);
-        scene.add(groupSphere);
-        scene.add(groupInner);
 
-        CFG.rings.forEach(def => { const r = makeRing(def); groupRings.push(r); scene.add(r); });
+        gyroGroup = new THREE.Group();
+        gyroGroup.add(groupSphere);
+        gyroGroup.add(groupInner);
+        CFG.rings.forEach(def => { const r = makeRing(def); groupRings.push(r); gyroGroup.add(r); });
+        scene.add(gyroGroup);
 
         const borderMat = new THREE.MeshBasicMaterial({ color: 0x0099FF });
         photoFiles.forEach((_, i) => {
@@ -546,15 +549,14 @@
             r.geometry.attributes.color.needsUpdate = true;
         });
 
-        // ── Gyro: camera parallax theo nghiêng điện thoại ──
-        gyroGamma += (rawGamma - gyroGamma) * 0.06;
-        gyroBeta  += (rawBeta  - gyroBeta)  * 0.06;
-        if (!finaleStarted && !cloudStarted) {
-            const gcx = (gyroGamma / 60) * 18;
-            const gcy = -((gyroBeta - 45) / 60) * 12;
-            camera.position.x += (gcx - camera.position.x) * 0.04;
-            camera.position.y += (gcy - camera.position.y) * 0.04;
-            camera.lookAt(0, 0, 0);
+        // ── Gyro: sphere rotate theo tilt điện thoại ──
+        gyroGamma += (rawGamma - gyroGamma) * 0.07;
+        gyroBeta  += (rawBeta  - gyroBeta)  * 0.07;
+        if (gyroGroup && !finaleStarted) {
+            const tiltZ = -(gyroGamma / 90) * 0.45;           // nghiêng trái/phải
+            const tiltX =  (gyroBeta  - 90) / 90 * 0.40;     // nghiêng tiến/lùi
+            gyroGroup.rotation.x += (tiltX - gyroGroup.rotation.x) * 0.07;
+            gyroGroup.rotation.z += (tiltZ - gyroGroup.rotation.z) * 0.07;
         }
 
         // ── Photo timeline (grid photos only) ──
