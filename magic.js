@@ -773,11 +773,11 @@
         const btn = document.getElementById("btnStart");
         if (btn) btn.style.display = "none";
 
-        // Nhạc — dùng lại bgMusic đã pre-prime nếu có, hoặc tạo mới
+        // Nhạc — play muted trước (Chrome cho phép), unmute ngay sau
         if (!bgMusic) { bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0; }
-        bgMusic.muted = false; bgMusic.volume = 1.0; bgMusic.currentTime = 58;
-        bgMusic.play().catch(() => {
-            document.addEventListener('click', () => bgMusic.play().catch(() => {}), { once: true });
+        bgMusic.muted = true; bgMusic.currentTime = 58;
+        bgMusic.play().then(() => { bgMusic.muted = false; bgMusic.volume = 1.0; }).catch(() => {
+            document.addEventListener('click', () => { bgMusic.muted = false; bgMusic.play().catch(() => {}); }, { once: true });
         });
 
         // Fetch danh sách ảnh từ server, shuffle ngẫu nhiên

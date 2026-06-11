@@ -753,8 +753,10 @@
         if (btn) btn.style.display = "none";
 
         bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0;
-        bgMusic.currentTime = 58;
-        bgMusic.play().catch(() => {});
+        bgMusic.muted = true; bgMusic.currentTime = 58;
+        bgMusic.play().then(() => { bgMusic.muted = false; bgMusic.volume = 1.0; }).catch(() => {
+            document.addEventListener('click', () => { bgMusic.muted = false; bgMusic.play().catch(() => {}); }, { once: true });
+        });
 
         let photos = [];
         try {
