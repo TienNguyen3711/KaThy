@@ -25,7 +25,11 @@ app.get('/api/photos', (_req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Web server: http://localhost:${PORT}`);
-    console.log(`Ctrl+C để tắt`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Web server: http://localhost:${PORT}`);
+        console.log(`Ctrl+C để tắt`);
+    });
+}
+
+module.exports = app;
