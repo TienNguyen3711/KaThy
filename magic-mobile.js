@@ -769,7 +769,11 @@
         init3D();
         window.addEventListener("resize", resizeToContainer);
         window.addEventListener("orientationchange", () => {
-            setTimeout(resizeToContainer, 300);
+            setTimeout(() => {
+                resizeToContainer();
+                const magic = document.getElementById('magicSection');
+                if (magic) magic.scrollIntoView({ behavior: 'instant' });
+            }, 300);
         });
 
         // ── Gyroscope (request permission on first touch for iOS) ──
