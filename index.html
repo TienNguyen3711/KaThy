@@ -11,6 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script>
+        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.location.replace('mobile.html');
+        }
+    </script>
 </head>
 
 <body>
@@ -45,7 +50,7 @@
         <div id="canvas-container"></div>
         <div id="cloud-caption">
             <p>3,000 chấm sáng.</p>
-            <p>3,000 điều mình chưa biết về bạn.</p>
+            <p>Một nguồn năng lượng tích cực mình may mắn gặp được.</p>
         </div>
     </section>
 

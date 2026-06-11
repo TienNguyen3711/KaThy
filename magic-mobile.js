@@ -20,7 +20,7 @@
     let finaleStarted = false, finalePhaseStart = 0;
     let cloudStarted = false, cloudStartTime = 0;
 
-    let heartFiles = ["/kathy.png"];
+    let heartFiles = ["kathy.png"];
     function getGalleryImageCount() { return Math.max(1, heartFiles.length); }
 
     // ── Glow textures ──────────────────────────────────────────────
@@ -726,7 +726,7 @@
 
         let photos = [];
         try {
-            const res = await fetch('/api/photos');
+            const res = await fetch('photos.json');
             photos = await res.json();
         } catch (_) {
             photos = ["./image1.jpeg","./image2.jpeg","./image3.jpeg","./image4.jpeg","./image5.jpeg"];
