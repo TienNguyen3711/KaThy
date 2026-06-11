@@ -83,6 +83,9 @@
     let galleryTimer = null, galleryBuilding = false, msgShown = false;
     let gallerySequenceDone = false;
 
+    // Gyroscope
+    let rawGamma = 0, rawBeta = 0, gyroGamma = 0, gyroBeta = 0;
+
     // ── Helpers ────────────────────────────────────────────────────
     function shuffle(arr) {
         for (let i = arr.length - 1; i > 0; i--) {
@@ -543,6 +546,17 @@
             r.geometry.attributes.color.needsUpdate = true;
         });
 
+        // ── Gyro: camera parallax theo nghiêng điện thoại ──
+        gyroGamma += (rawGamma - gyroGamma) * 0.06;
+        gyroBeta  += (rawBeta  - gyroBeta)  * 0.06;
+        if (!finaleStarted && !cloudStarted) {
+            const gcx = (gyroGamma / 60) * 18;
+            const gcy = -((gyroBeta - 45) / 60) * 12;
+            camera.position.x += (gcx - camera.position.x) * 0.04;
+            camera.position.y += (gcy - camera.position.y) * 0.04;
+            camera.lookAt(0, 0, 0);
+        }
+
         // ── Photo timeline (grid photos only) ──
         photoDelays.forEach((delay, i) => {
             if (delay === Infinity) return;
@@ -752,6 +766,40 @@
         startTime = Date.now();
         init3D();
         window.addEventListener("resize", resizeToContainer);
+
+        // ── Gyroscope (request permission on first touch for iOS) ──
+        const onGyro = e => { rawGamma = e.gamma || 0; rawBeta = e.beta || 0; };
+        let gyroActive = false;
+        const enableGyro = () => {
+            if (gyroActive) return; gyroActive = true;
+            if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(p => { if (p === 'granted') window.addEventListener('deviceorientation', onGyro); })
+                    .catch(() => {});
+            } else {
+                window.addEventListener('deviceorientation', onGyro);
+            }
+        };
+
+        // ── Tap sphere → morph thành final.png ──
+        let tapStart = null;
+        const cont = document.getElementById('canvas-container');
+        if (cont) {
+            cont.addEventListener('touchstart', e => {
+                enableGyro();
+                if (e.touches.length === 1)
+                    tapStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+            }, { passive: true });
+            cont.addEventListener('touchend', e => {
+                if (!tapStart || state !== 'SPHERE' || finaleStarted || cloudStarted) { tapStart = null; return; }
+                const dx = e.changedTouches[0].clientX - tapStart.x;
+                const dy = e.changedTouches[0].clientY - tapStart.y;
+                if (Math.hypot(dx, dy) < 15 && Date.now() - tapStart.t < 350) {
+                    finaleStarted = true; finalePhaseStart = Date.now();
+                }
+                tapStart = null;
+            }, { passive: true });
+        }
     }
 
     window.addEventListener("magic-start", startSystem, { once: true });
