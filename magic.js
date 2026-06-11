@@ -5,6 +5,19 @@
     let bgMusic = null;
     const loader = new THREE.TextureLoader();
 
+    // Pre-prime audio on first user interaction so autoplay works when magic fires
+    let _primed = false;
+    function _primeAudio() {
+        if (_primed) return;
+        _primed = true;
+        bgMusic = new Audio(MUSIC_URL);
+        bgMusic.loop = true; bgMusic.volume = 1.0;
+        bgMusic.muted = true;
+        bgMusic.play().then(() => { bgMusic.pause(); bgMusic.muted = false; bgMusic.currentTime = 58; }).catch(() => {});
+        ['mousedown','click','touchstart','keydown'].forEach(e => document.removeEventListener(e, _primeAudio));
+    }
+    ['mousedown','click','touchstart','keydown'].forEach(e => document.addEventListener(e, _primeAudio, { passive: true }));
+
     // Filled dynamically in startSystem()
     let photoFiles     = [];
     let photoTextures  = [];
@@ -760,14 +773,11 @@
         const btn = document.getElementById("btnStart");
         if (btn) btn.style.display = "none";
 
-        // Nhạc
-        bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0;
-        bgMusic.currentTime = 58;
+        // Nhạc — dùng lại bgMusic đã pre-prime nếu có, hoặc tạo mới
+        if (!bgMusic) { bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0; }
+        bgMusic.muted = false; bgMusic.volume = 1.0; bgMusic.currentTime = 58;
         bgMusic.play().catch(() => {
-            // Browser blocked autoplay — play on next user interaction
-            const unlock = () => { bgMusic.play().catch(() => {}); document.removeEventListener("click", unlock); document.removeEventListener("keydown", unlock); };
-            document.addEventListener("click", unlock, { once: true });
-            document.addEventListener("keydown", unlock, { once: true });
+            document.addEventListener('click', () => bgMusic.play().catch(() => {}), { once: true });
         });
 
         // Fetch danh sách ảnh từ server, shuffle ngẫu nhiên
