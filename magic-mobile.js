@@ -368,7 +368,6 @@
         subCtx.font = '700 36px "Dancing Script", cursive';
         subCtx.textAlign = "center"; subCtx.fillStyle = "#88CCFF";
         subCtx.fillText("đã cho mình một mùa hè thật đáng nhớ ♡", 512, 80);
-        subCtx.;
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
         subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(70, 70 * 0.11), subMat);
