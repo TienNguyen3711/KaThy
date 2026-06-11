@@ -76,6 +76,7 @@
     let photoMeshes  = [];
     let msgMesh, mc, mCtx, mTex;
     let msgWriteStart = -1, msgTextX = 0, msgTextW = 0;
+    let subMsgMesh = null;
 
     let state     = "SPHERE";
     let started   = false;
@@ -361,6 +362,19 @@
         msgMesh.position.set(0, -36, 0); msgMesh.visible = false;
         scene.add(msgMesh);
 
+        // Subtitle: "Cảm ơn Ka Thyy..."
+        const subMc = document.createElement("canvas"); subMc.width = 1024; subMc.height = 160;
+        const subCtx = subMc.getContext("2d");
+        subCtx.font = '700 36px "Dancing Script", cursive';
+        subCtx.textAlign = "center"; subCtx.fillStyle = "#88CCFF";
+        subCtx.fillText("Cảm ơn Ka Thyy đã cho tôi", 512, 60);
+        subCtx.fillText("những kỉ niệm đáng nhớ", 512, 120);
+        const subTex = new THREE.CanvasTexture(subMc);
+        const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
+        subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(70, 70 * 0.11), subMat);
+        subMsgMesh.position.set(0, -50, 0); subMsgMesh.visible = false;
+        scene.add(subMsgMesh);
+
         createGalleryPoints();
         buildGalleryTargets(); // pre-build ngay lập tức
 
@@ -438,6 +452,7 @@
                 gallerySequenceDone = true;
                 clearInterval(galleryTimer); galleryTimer = null;
                 setTimeout(() => { if (state === "GALLERY") { msgMesh.visible = true; msgShown = true; msgWriteStart = Date.now(); } }, 350);
+                setTimeout(() => { if (state === "GALLERY" && subMsgMesh) subMsgMesh.visible = true; }, 3200);
             }
         }, CFG.revealStepMs);
     }
@@ -446,6 +461,7 @@
         if (galleryTimer) { clearInterval(galleryTimer); galleryTimer = null; }
         galleryRevealCount = 0; gallerySequenceDone = false;
         if (msgMesh) msgMesh.visible = false;
+        if (subMsgMesh) subMsgMesh.visible = false;
     }
 
     function updateGalleryPoints(time) {
