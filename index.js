@@ -1,18 +1,31 @@
-// Require the express web application framework (https://expressjs.com)
-const express = require('express')
+const express = require('express');
+const path    = require('path');
+const fs      = require('fs');
 
-// Create a new web application by calling the express function
-const app = express()
-const port = 3000
+const app      = express();
+const PORT     = 3000;
+const KATHY    = path.join(__dirname, '..', 'Kathy');
+const IMG_RE   = /\.(jpe?g|png|webp|gif)$/i;
 
-// Tell our application to serve all the files under the `public_html` directory
-app.use(express.static('public_html'))
+// Serve Christmas---Amber files (index.html, magic.js, ...)
+app.use(express.static(__dirname));
 
-// Tell our application to listen to requests at port 3000 on the localhost
-app.listen(port, ()=> {
-  // When the application starts, print to the console that our app is
-  // running at http://localhost:3000. Print another message indicating
-  // how to shut the server down.
-  console.log(`Web server running at: http://localhost:${port}`)
-  console.log(`Type Ctrl+C to shut down the web server`)
-})
+// Serve ảnh trong folder Kathy tại /kathy/
+app.use('/kathy', express.static(KATHY));
+
+// API: trả danh sách ảnh trong Kathy (server sort, client sẽ shuffle)
+app.get('/api/photos', (_req, res) => {
+    try {
+        const files = fs.readdirSync(KATHY)
+            .filter(f => IMG_RE.test(f))
+            .map(f => `/kathy/${encodeURIComponent(f)}`);
+        res.json(files);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Web server: http://localhost:${PORT}`);
+    console.log(`Ctrl+C để tắt`);
+});

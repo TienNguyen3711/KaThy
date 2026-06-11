@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Christmas - Ka Thyy</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Đảm bảo portrait full-screen trên mobile */
+        html, body {
+            overscroll-behavior: none;
+            touch-action: none;
+        }
+        #canvas-container {
+            touch-action: none;
+        }
+        #btnStart {
+            font-size: 1.1rem;
+            padding: 14px 36px;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+</head>
+
+<body>
+    <!-- ====== SECTION 1: INTRO ====== -->
+    <section class="intro" id="intro">
+        <div class="sky" id="sky" aria-hidden="true"></div>
+
+        <div class="hero">
+            <div class="left">
+                <div class="top-copy">
+                    <h1 class="title">Welcome Lady</h1>
+                </div>
+
+                <div class="bottom-copy">
+                    <div class="reveal-text" id="revealText" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div class="right" id="rightMedia">
+                <img src="amber.JPG" alt="Right image" id="heroImage">
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== SECTION 2: Holographic Sphere ====== -->
+    <section class="magic" id="magicSection">
+        <div id="magic-intro">
+            <p class="intro-q" id="introQ1">Okay đừng shock.</p>
+            <p class="intro-q" id="introQ2">mình đã làm cái website này cho bạn</p>
+            <p class="intro-q" id="introQ3">Bạn welcome nhé.</p>
+        </div>
+        <div id="canvas-container"></div>
+        <div id="cloud-caption">
+            <p>5,000 chấm sáng.</p>
+            <p>5,000 điều mình chưa biết về bạn.</p>
+        </div>
+    </section>
+
+    <!-- JS -->
+    <script src="main.js" defer></script>
+    <script src="magic-mobile.js" defer></script>
+</body>
+
+</html>

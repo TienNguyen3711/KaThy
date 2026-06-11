@@ -4,17 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Christmas - Amber </title>
+    <title>Kathy's Special Gift</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
-    <!-- Three.js + MediaPipe (để ở head hoặc trước </body> đều được) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"
-        defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"
-        defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous" defer></script>
 </head>
 
 <body>
@@ -34,27 +30,23 @@
             </div>
 
             <div class="right" id="rightMedia">
-                <!-- sửa src thành ảnh thật -->
-                <img src="amber.JPG" alt="Right image" id="heroImage">
+                <img src="kathyy.jpg" alt="Right image" id="heroImage">
             </div>
         </div>
     </section>
 
-    <!-- ====== SECTION 2: Christmas Tree ====== -->
+    <!-- ====== SECTION 2: Holographic Sphere ====== -->
     <section class="magic" id="magicSection">
-        <div id="error-log"></div>
-        <div id="ui-layer">
-            <div class="guide">
-                🖐 <b>Open:</b> Explode &nbsp;|&nbsp;
-                👌 <b>Choose:</b> Photo &nbsp;|&nbsp;
-                🫶 <b>Heart:</b> Best for last 😁  &nbsp;|&nbsp;
-                ✊ <b>Fist:</b> Tree
-            </div>
-            <button id="btnStart">START MAGIC</button>
+        <div id="magic-intro">
+            <p class="intro-q" id="introQ1">Okay đừng shock.</p>
+            <p class="intro-q" id="introQ2">mình đã làm cái website này cho bạn</p>
+            <p class="intro-q" id="introQ3">Bạn welcome nhé.</p>
         </div>
         <div id="canvas-container"></div>
-        <video class="input_video" style="display:none"></video>
-        <canvas id="camera-preview"></canvas>
+        <div id="cloud-caption">
+            <p>3,000 chấm sáng.</p>
+            <p>3,000 điều mình chưa biết về bạn.</p>
+        </div>
     </section>
 
     <!-- JS -->
@@ -63,4 +55,3 @@
 </body>
 
 </html>
-<!-- GALLERY -->

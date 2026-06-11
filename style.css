@@ -10,7 +10,23 @@ body { overflow-x: hidden; overflow-y: auto; background: #03040a; color: #eaeefc
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: radial-gradient(ellipse at bottom, #0b1b3a 0%, #05070f 60%, #03040a 100%);
+  background:
+    radial-gradient(ellipse at 60% 0%, #0d2048 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 30%, #071630 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, #0b1b3a 0%, #05070f 60%, #03040a 100%);
+}
+
+/* Sao tĩnh */
+.star-bg {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle var(--tdur, 3s) var(--tdelay, 0s) ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: var(--op-lo, 0.2); transform: scale(1); }
+  to   { opacity: var(--op-hi, 0.9); transform: scale(var(--tscale, 1.4)); }
 }
 
 
@@ -275,4 +291,68 @@ canvas{
   background: #aed4ff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
   transform: translateY(0);
+}
+
+/* ── Magic intro overlay ───────────────────────────────────── */
+#magic-intro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+  gap: 0.4rem;
+}
+
+.intro-q {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  color: #fff;
+  text-shadow: 0 0 18px #00AAFF, 0 0 50px #0055FF, 0 0 90px #003399;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(28px) scale(0.92);
+  transition: opacity 1.1s ease, transform 1.1s ease;
+  letter-spacing: 0.02em;
+}
+
+.intro-q.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.intro-q.fade-out {
+  opacity: 0;
+  transform: translateY(-18px) scale(1.04);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+/* ── Cloud phase caption ───────────────────────────────────── */
+#cloud-caption {
+  position: absolute;
+  bottom: 60px;
+  left: 0; right: 0;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 2s ease, transform 2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+#cloud-caption.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#cloud-caption p {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.3rem, 3vw, 2.4rem);
+  color: #fff;
+  text-shadow: 0 0 16px #00AAFF, 0 0 45px #0055FF, 0 0 80px #003399;
+  margin: 0;
+  letter-spacing: 0.04em;
 }

@@ -8,7 +8,7 @@
 const sky = document.getElementById('sky');
 
 const CONFIG = {
-  count: 22,               // số sao băng đồng thời
+  count: 12,               // số sao băng đồng thời
   angleDeg: 45,            // góc nghiêng bay
   minLen: 60,              // shorter tails for the look in the reference
   maxLen: 180,
@@ -131,6 +131,81 @@ window.addEventListener('resize', () => {
   resizeTimer = setTimeout(render, 150);
 });
 
+// ── Bầu trời sao tĩnh ─────────────────────────────────────────
+function createStaticStars() {
+  const frag = document.createDocumentFragment();
+
+  // Phân bố 3 loại sao: nhỏ (nhiều), vừa, lớn (ít)
+  const layers = [
+    { count: 180, sizes: [1, 1, 1, 2],    opLo: [0.15, 0.35], opHi: [0.5, 0.85],  dur: [2, 5],  scale: [1.2, 1.6] },
+    { count:  60, sizes: [2, 2, 3],        opLo: [0.25, 0.45], opHi: [0.7, 1.0],   dur: [1.5, 4],scale: [1.3, 1.8] },
+    { count:  20, sizes: [3, 4],           opLo: [0.3, 0.5],   opHi: [0.8, 1.0],   dur: [1, 3],  scale: [1.1, 1.4] },
+  ];
+
+  // Dải Ngân Hà: cluster sao dày hơn chạy chéo qua màn hình
+  const milkyWay = { count: 90, sizes: [1, 1, 2], opLo: [0.1, 0.25], opHi: [0.35, 0.65], dur: [3, 7], scale: [1.1, 1.3] };
+
+  function makeStar(sz, opLo, opHi, dur, tscale, x, y, color) {
+    const el = document.createElement('div');
+    el.className = 'star-bg';
+    el.style.cssText = [
+      `left:${x.toFixed(2)}%`,
+      `top:${y.toFixed(2)}%`,
+      `width:${sz}px`,
+      `height:${sz}px`,
+      `--op-lo:${opLo.toFixed(2)}`,
+      `--op-hi:${opHi.toFixed(2)}`,
+      `--tdur:${dur.toFixed(1)}s`,
+      `--tdelay:-${(Math.random()*8).toFixed(1)}s`,
+      `--tscale:${tscale.toFixed(2)}`,
+      `background:${color}`,
+    ].join(';');
+    return el;
+  }
+
+  function rFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function rRange(a) { return a[0] + Math.random() * (a[1] - a[0]); }
+
+  // Màu sao: 70% trắng, 15% xanh lạnh, 10% vàng nhạt, 5% đỏ cam
+  function starColor() {
+    const r = Math.random();
+    if (r < 0.70) return '#ffffff';
+    if (r < 0.85) return '#cce8ff';
+    if (r < 0.95) return '#fff5cc';
+    return '#ffd0aa';
+  }
+
+  // Các layer thường
+  layers.forEach(l => {
+    for (let i = 0; i < l.count; i++) {
+      frag.appendChild(makeStar(
+        rFrom(l.sizes),
+        rRange(l.opLo), rRange(l.opHi),
+        rRange(l.dur), rRange(l.scale),
+        Math.random() * 100, Math.random() * 100,
+        starColor()
+      ));
+    }
+  });
+
+  // Dải Ngân Hà: sao phân bố theo dải chéo (x=20→80%, y=0→70%)
+  for (let i = 0; i < milkyWay.count; i++) {
+    const t  = Math.random();
+    const bx = 18 + t * 62;
+    const by = t * 68 + (Math.random() - 0.5) * 22;
+    frag.appendChild(makeStar(
+      rFrom(milkyWay.sizes),
+      rRange(milkyWay.opLo), rRange(milkyWay.opHi),
+      rRange(milkyWay.dur), rRange(milkyWay.scale),
+      Math.max(0, Math.min(100, bx)), Math.max(0, Math.min(100, by)),
+      starColor()
+    ));
+  }
+
+  sky.appendChild(frag);
+}
+
+createStaticStars();
 render();
 
 /* ------------------------
@@ -192,11 +267,48 @@ window.addEventListener('load', ()=>{
   setTimeout(()=>{
     // reveal bottom-left description (keep right image visible)
     // replaceRightMedia(); // intentionally disabled so hero image remains shown
-    revealDescriptiveText(`Amber Lê - Hành trình một năm đáng nhớ.
-  Merry Christmas. Chúc Bờ sẽ có một mùa Giáng Sinh an lành, vui vẻ và hạnh phúc bên người mình yêu thương.
+    revealDescriptiveText(`Ka Thyy - Chưa biết nhau nhiều,
+  nhưng mình nghĩ bạn xứng đáng có một thứ gì đó đặc biệt.
   And I have a special gift for you 😁`, 200);
   }, 3200);
 });
+
+// ── Magic section: intro text → auto-start animation ──────────
+function playMagicIntro() {
+    const q1    = document.getElementById('introQ1');
+    const q2    = document.getElementById('introQ2');
+    const q3    = document.getElementById('introQ3');
+    const intro = document.getElementById('magic-intro');
+
+    if (!q1) { window.dispatchEvent(new Event('magic-start')); return; }
+
+    setTimeout(() => q1.classList.add('show'),  400);   // "Okay đừng shock."
+    setTimeout(() => q2?.classList.add('show'), 1600);  // "tôi đã làm cái website này cho bạn"
+    setTimeout(() => q3?.classList.add('show'), 2800);  // "Bạn welcome nhé."
+    setTimeout(() => {                                   // cả 3 fade out
+        [q1, q2, q3].forEach(q => q?.classList.add('fade-out'));
+    }, 4500);
+    setTimeout(() => {                                   // bắt đầu magic
+        if (intro) intro.style.display = 'none';
+        window.dispatchEvent(new Event('magic-start'));
+    }, 5500);
+}
+
+(function () {
+    const magicSection = document.getElementById('magicSection');
+    if (!magicSection) return;
+    let played = false;
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+            if (en.isIntersecting && !played) {
+                played = true;
+                obs.disconnect();
+                playMagicIntro();
+            }
+        });
+    }, { threshold: 0.25 });
+    obs.observe(magicSection);
+})();
 
 // scroll observer: when next section enters, fade hero
 const next = document.getElementById('nextSection');
