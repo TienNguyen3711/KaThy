@@ -751,7 +751,7 @@
         // Fetch danh sách ảnh từ server, shuffle ngẫu nhiên
         let photos = [];
         try {
-            const res = await fetch('/api/photos');
+            const res = await fetch('/photos.json');
             photos = await res.json();
         } catch (_) {
             // fallback nếu mở file:// thay vì qua server
