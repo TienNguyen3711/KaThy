@@ -353,7 +353,7 @@
         mCtx.clearRect(0, 0, 1024, 256);
         await document.fonts.load('700 120px "Dancing Script"');
         mCtx.font = '700 120px "Dancing Script", cursive'; mCtx.textAlign = "center";
-        const _m = mCtx.measureText("For Ka Thy");
+        const _m = mCtx.measureText("Cảm ơn Ka Thy");
         msgTextX = Math.round(512 - _m.width / 2) - 8;
         msgTextW = Math.round(_m.width) + 16;
         mTex = new THREE.CanvasTexture(mc);
@@ -367,8 +367,8 @@
         const subCtx = subMc.getContext("2d");
         subCtx.font = '700 36px "Dancing Script", cursive';
         subCtx.textAlign = "center"; subCtx.fillStyle = "#88CCFF";
-        subCtx.fillText("Cảm ơn Ka Thy đã cho mình", 512, 60);
-        subCtx.fillText("những kỉ niệm đáng nhớ", 512, 120);
+        subCtx.fillText("đã cho mình một mùa hè thật đáng nhớ ♡", 512, 80);
+        subCtx.;
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
         subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(70, 70 * 0.11), subMat);
@@ -512,7 +512,7 @@
                 mCtx.textAlign = "center";
                 mCtx.fillStyle = "#FFFFFF";
                 mCtx.shadowColor = "#00AAFF"; mCtx.shadowBlur = 35;
-                mCtx.fillText("For Ka Thy", 512, 160);
+                mCtx.fillText("Cảm ơn Ka Thy", 512, 160);
                 mCtx.restore();
                 mTex.needsUpdate = true;
             }
