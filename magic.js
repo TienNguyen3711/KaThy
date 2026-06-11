@@ -5,19 +5,6 @@
     let bgMusic = null;
     const loader = new THREE.TextureLoader();
 
-    // Pre-prime audio on first user interaction so autoplay works when magic fires
-    let _primed = false;
-    function _primeAudio() {
-        if (_primed) return;
-        _primed = true;
-        bgMusic = new Audio(MUSIC_URL);
-        bgMusic.loop = true; bgMusic.volume = 1.0;
-        bgMusic.muted = true;
-        bgMusic.play().then(() => { bgMusic.pause(); bgMusic.muted = false; bgMusic.currentTime = 58; }).catch(() => {});
-        ['mousedown','click','touchstart','keydown'].forEach(e => document.removeEventListener(e, _primeAudio));
-    }
-    ['mousedown','click','touchstart','keydown'].forEach(e => document.addEventListener(e, _primeAudio, { passive: true }));
-
     // Filled dynamically in startSystem()
     let photoFiles     = [];
     let photoTextures  = [];
@@ -774,7 +761,7 @@
 
         // Nhạc — play muted trước (Chrome cho phép), unmute ngay sau
         if (!bgMusic) { bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0; }
-        bgMusic.muted = true; bgMusic.currentTime = 58;
+        bgMusic.muted = true; bgMusic.currentTime = 58; // Bắt đầu từ 58s để bỏ phần intro yên tĩnh
         bgMusic.play().then(() => { bgMusic.muted = false; bgMusic.volume = 1.0; }).catch(() => {
             document.addEventListener('click', () => { bgMusic.muted = false; bgMusic.play().catch(() => {}); }, { once: true });
         });
