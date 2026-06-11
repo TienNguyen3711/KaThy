@@ -763,7 +763,12 @@
         // Nhạc
         bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0;
         bgMusic.currentTime = 58;
-        bgMusic.play().catch(() => {});
+        bgMusic.play().catch(() => {
+            // Browser blocked autoplay — play on next user interaction
+            const unlock = () => { bgMusic.play().catch(() => {}); document.removeEventListener("click", unlock); document.removeEventListener("keydown", unlock); };
+            document.addEventListener("click", unlock, { once: true });
+            document.addEventListener("keydown", unlock, { once: true });
+        });
 
         // Fetch danh sách ảnh từ server, shuffle ngẫu nhiên
         let photos = [];
