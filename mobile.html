@@ -25,6 +25,35 @@
             font-size: 1.1rem;
             padding: 14px 36px;
         }
+
+        /* Mobile portrait: stack layout vertically, fill full screen */
+        .intro {
+            min-height: 100svh;
+            min-height: 100vh; /* fallback */
+        }
+        .hero {
+            flex-direction: column;
+            min-height: 100svh;
+            min-height: 100vh;
+        }
+        .left {
+            min-width: unset;
+            width: 100%;
+            padding: 24px 20px 16px;
+            flex: unset;
+        }
+        .right {
+            width: 100%;
+            min-width: unset;
+            padding: 0 20px 32px;
+            flex: 1;
+        }
+        .right img {
+            width: 100%;
+            height: auto;
+            max-height: 55vw;
+            object-fit: cover;
+        }
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
