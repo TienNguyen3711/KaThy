@@ -1,6 +1,6 @@
 // magic-mobile.js — Mobile version (portrait, Kathy.png)
 (() => {
-    const MUSIC_URL = "./Mê Ry Chí Mớt_audio.mp3";
+    const MUSIC_URL = "./Em Không Lẻ Loi.mp3";
     let bgMusic = null;
     const loader = new THREE.TextureLoader();
 
@@ -721,6 +721,7 @@
         if (btn) btn.style.display = "none";
 
         bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0;
+        bgMusic.currentTime = 58;
         bgMusic.play().catch(() => {});
 
         let photos = [];
