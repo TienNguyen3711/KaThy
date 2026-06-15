@@ -359,7 +359,7 @@
         mTex = new THREE.CanvasTexture(mc);
         const mMat = new THREE.MeshBasicMaterial({ map: mTex, transparent: true, blending: THREE.AdditiveBlending });
         msgMesh = new THREE.Mesh(new THREE.PlaneGeometry(70, 70 * 0.22), mMat);
-        msgMesh.position.set(0, -36, 0); msgMesh.visible = false;
+        msgMesh.position.set(0, -28, 0); msgMesh.visible = false;
         scene.add(msgMesh);
 
         // Subtitle
@@ -369,11 +369,11 @@
         subCtx.font = '700 58px "Dancing Script", cursive';
         subCtx.textAlign = "center"; subCtx.fillStyle = "#88CCFF";
         subCtx.shadowColor = "#00AAFF"; subCtx.shadowBlur = 22;
-        subCtx.fillText("đã là một ngoại lệ thật đặc biệt ♡", 512, 100);
+        subCtx.fillText("đã là một ngoại lệ thật đặc biệt ♡", 512, 80);
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
         subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(80, 80 * 0.11), subMat);
-        subMsgMesh.position.set(0, -45, 0); subMsgMesh.visible = false;
+        subMsgMesh.position.set(0, -38, 0); subMsgMesh.visible = false;
         scene.add(subMsgMesh);
 
         createGalleryPoints();
@@ -513,7 +513,7 @@
                 mCtx.textAlign = "center";
                 mCtx.fillStyle = "#FFFFFF";
                 mCtx.shadowColor = "#00AAFF"; mCtx.shadowBlur = 35;
-                mCtx.fillText("Cảm ơn Ka Thy", 512, 160);
+                mCtx.fillText("Cảm ơn Ka Thy", 512, 128);
                 mCtx.restore();
                 mTex.needsUpdate = true;
             }
