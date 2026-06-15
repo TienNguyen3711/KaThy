@@ -496,8 +496,7 @@
 
         // ── GALLERY ──
         if (isGallery) {
-            const zero = new THREE.Vector3(0, 0, 0);
-            photoMeshes.forEach(m => m.scale.lerp(zero, 0.08));
+            photoMeshes.forEach(m => { m.visible = false; m.scale.set(0, 0, 0); });
             if (!galleryReady && !galleryBuilding) buildGalleryTargets();
             if (galleryReady) { startGallerySequence(); updateGalleryPoints(time); }
 
