@@ -788,8 +788,6 @@
         window.addEventListener("orientationchange", () => {
             setTimeout(() => {
                 resizeToContainer();
-                const magic = document.getElementById('magicSection');
-                if (magic) magic.scrollIntoView({ behavior: 'instant' });
                 // Rebuild gallery targets with updated camera aspect after rotation
                 if (galleryReady || state === "GALLERY") {
                     galleryReady = false;

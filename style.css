@@ -1,10 +1,10 @@
 /* Reset */
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
-body { overflow-x: hidden; overflow-y: auto; background: #03040a; color: #eaeefc; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+body { overflow: hidden; background: #03040a; color: #eaeefc; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
 
 /* Sky */
-.intro { position: relative; min-height: 100vh; }
+.intro { position: fixed; inset: 0; z-index: 10; transition: opacity 0.9s ease; }
 .sky{
   position: absolute;
   inset: 0;
@@ -31,7 +31,7 @@ body { overflow-x: hidden; overflow-y: auto; background: #03040a; color: #eaeefc
 
 
 /* Layout: two-column hero */
-.hero{position:relative;display:flex;align-items:stretch;min-height:100vh;z-index:1}
+.hero{position:relative;display:flex;align-items:stretch;height:100%;z-index:1}
 .left{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:32px;min-width:320px}
 .right{width:44vw;min-width:320px;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at bottom, var(--bg-top) 0%, var(--bg-mid) 60%, var(--bg-bottom) 100%)}
 .right img{width:80%;height:80%;object-fit:cover;border-radius:6px;box-shadow:0 12px 30px rgba(0,0,0,0.5);transition:opacity 600ms ease, transform 600ms ease;transform: translateY(8px);opacity:0.94}
@@ -229,9 +229,9 @@ p{ margin: 0; opacity: 0.85; }
 }
 
 .magic{
-  position: relative;
+  position: fixed;
+  inset: 0;
   z-index: 1;
-  height: 100vh;
   overflow: hidden;
   background: #000;
 }

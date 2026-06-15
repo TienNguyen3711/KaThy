@@ -14,54 +14,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        /* Đảm bảo portrait full-screen trên mobile */
-        html, body {
-            overscroll-behavior: none;
-        }
-        #canvas-container {
-            touch-action: none;
-        }
-
-        /* Landscape: magic section full viewport */
-        @media (orientation: landscape) {
-            .magic {
-                height: 100dvh;
-                height: 100vh;
-            }
-        }
-        #btnStart {
-            font-size: 1.1rem;
-            padding: 14px 36px;
-        }
-
-        /* Mobile portrait: stack layout vertically, fill full screen */
-        .intro {
-            min-height: 100svh;
-            min-height: 100vh; /* fallback */
-        }
-        .hero {
-            flex-direction: column;
-            min-height: 100svh;
-            min-height: 100vh;
-        }
-        .left {
-            min-width: unset;
-            width: 100%;
-            padding: 24px 20px 16px;
-            flex: unset;
-        }
-        .right {
-            width: 100%;
-            min-width: unset;
-            padding: 0 20px 32px;
-            flex: 1;
-        }
-        .right img {
-            width: 100%;
-            height: auto;
-            max-height: 55vw;
-            object-fit: cover;
-        }
+        html, body { overscroll-behavior: none; }
+        #canvas-container { touch-action: none; }
+        #btnStart { font-size: 1.1rem; padding: 14px 36px; }
+        /* Mobile portrait: stack columns vertically */
+        .hero { flex-direction: column; height: 100%; }
+        .left { min-width: unset; width: 100%; padding: 24px 20px 16px; flex: unset; }
+        .right { width: 100%; min-width: unset; padding: 0 20px 32px; flex: 1; }
+        .right img { width: 100%; height: auto; max-height: 55vw; object-fit: cover; }
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>

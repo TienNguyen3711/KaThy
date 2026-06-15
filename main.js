@@ -263,14 +263,22 @@ function replaceRightMedia(){
 
 // trigger reveal after brief shooting-star show
 window.addEventListener('load', ()=>{
-  // short delay to let stars animate — adjust as needed
   setTimeout(()=>{
-    // reveal bottom-left description (keep right image visible)
-    // replaceRightMedia(); // intentionally disabled so hero image remains shown
-    revealDescriptiveText(`Ka Thy - Chưa biết nhau nhiều,
+    revealDescriptiveText(`Ka Thyy - Chưa biết nhau nhiều,
   nhưng mình nghĩ bạn xứng đáng có một thứ gì đó đặc biệt.
   And I have a special gift for you 😁`, 200);
   }, 3200);
+
+  // Auto-transition to magic section after intro plays out (~9.4s text + 2s pause)
+  setTimeout(() => {
+    const introEl = document.getElementById('intro');
+    if (introEl) {
+      introEl.style.opacity = '0';
+      introEl.style.pointerEvents = 'none';
+      setTimeout(() => { introEl.style.display = 'none'; }, 900);
+    }
+    playMagicIntro();
+  }, 11500);
 });
 
 // ── Magic section: intro text → auto-start animation ──────────
@@ -283,52 +291,15 @@ function playMagicIntro() {
 
     if (!q1) { window.dispatchEvent(new Event('magic-start')); return; }
 
-    setTimeout(() => q1.classList.add('show'),  400);   // "Okay đừng shock."
-    setTimeout(() => q2?.classList.add('show'), 1600);  // "mình đã làm cái website này cho bạn"
-    setTimeout(() => q3?.classList.add('show'), 2800);  // "Bạn welcome nhé."
-    setTimeout(() => q4?.classList.add('show'), 4000);  // "Hãy xoay ngang..."
-    setTimeout(() => {                                   // tất cả fade out
+    setTimeout(() => q1.classList.add('show'),  400);
+    setTimeout(() => q2?.classList.add('show'), 1600);
+    setTimeout(() => q3?.classList.add('show'), 2800);
+    setTimeout(() => q4?.classList.add('show'), 4000);
+    setTimeout(() => {
         [q1, q2, q3, q4].forEach(q => q?.classList.add('fade-out'));
     }, 6000);
-    setTimeout(() => {                                   // bắt đầu magic (2s sau Q4)
+    setTimeout(() => {
         if (intro) intro.style.display = 'none';
         window.dispatchEvent(new Event('magic-start'));
     }, 7000);
-}
-
-(function () {
-    const magicSection = document.getElementById('magicSection');
-    if (!magicSection) return;
-    let played = false;
-    const obs = new IntersectionObserver((entries) => {
-        entries.forEach(en => {
-            if (en.isIntersecting && !played) {
-                played = true;
-                obs.disconnect();
-                playMagicIntro();
-            }
-        });
-    }, { threshold: 0.25 });
-    obs.observe(magicSection);
-})();
-
-// scroll observer: when next section enters, fade hero
-const next = document.getElementById('nextSection');
-if(next){
-  const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(en => {
-      // fade only the left column (text) so the right image can be dimmed instead
-      const leftCol = document.querySelector('.left');
-      const right = document.getElementById('rightMedia');
-      if(leftCol){
-        if(en.isIntersecting) leftCol.classList.add('faded');
-        else leftCol.classList.remove('faded');
-      }
-      if(right){
-        if(en.isIntersecting) right.classList.add('dimmed');
-        else right.classList.remove('dimmed');
-      }
-    });
-  }, {threshold: 0.12});
-  obs.observe(next);
 }
