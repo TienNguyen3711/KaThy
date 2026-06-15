@@ -373,7 +373,7 @@
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
         subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(80, 80 * 0.11), subMat);
-        subMsgMesh.position.set(0, -48, 0); subMsgMesh.visible = false;
+        subMsgMesh.position.set(0, -45, 0); subMsgMesh.visible = false;
         scene.add(subMsgMesh);
 
         createGalleryPoints();

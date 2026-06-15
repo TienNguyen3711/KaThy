@@ -359,7 +359,7 @@
         mTex = new THREE.CanvasTexture(mc);
         const mMat = new THREE.MeshBasicMaterial({ map: mTex, transparent: true, blending: THREE.AdditiveBlending });
         msgMesh = new THREE.Mesh(new THREE.PlaneGeometry(70, 70 * 0.22), mMat);
-        msgMesh.position.set(0, -58, 0); msgMesh.visible = false;
+        msgMesh.position.set(0, -52, 0); msgMesh.visible = false;
         scene.add(msgMesh);
 
         // Subtitle: "đã là một ngoại lệ thật đặc biệt ♡"
@@ -372,7 +372,7 @@
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
         subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(78, 78 * 0.11), subMat);
-        subMsgMesh.position.set(0, -78, 0); subMsgMesh.visible = false;
+        subMsgMesh.position.set(0, -64, 0); subMsgMesh.visible = false;
         scene.add(subMsgMesh);
 
         createGalleryPoints();
