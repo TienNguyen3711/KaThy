@@ -363,17 +363,17 @@
         scene.add(msgMesh);
 
         // Subtitle
-        await document.fonts.load('700 40px "Dancing Script"');
-        const subMc = document.createElement("canvas"); subMc.width = 1024; subMc.height = 128;
+        await document.fonts.load('700 58px "Dancing Script"');
+        const subMc = document.createElement("canvas"); subMc.width = 1024; subMc.height = 160;
         const subCtx = subMc.getContext("2d");
-        subCtx.font = '700 40px "Dancing Script", cursive';
+        subCtx.font = '700 58px "Dancing Script", cursive';
         subCtx.textAlign = "center"; subCtx.fillStyle = "#88CCFF";
-        subCtx.shadowColor = "#00AAFF"; subCtx.shadowBlur = 18;
-        subCtx.fillText("đã là một ngoại lệ thật đặc biệt ♡", 512, 72);
+        subCtx.shadowColor = "#00AAFF"; subCtx.shadowBlur = 22;
+        subCtx.fillText("đã là một ngoại lệ thật đặc biệt ♡", 512, 100);
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
-        subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(70, 70 * 0.09), subMat);
-        subMsgMesh.position.set(0, -46, 0); subMsgMesh.visible = false;
+        subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(80, 80 * 0.11), subMat);
+        subMsgMesh.position.set(0, -48, 0); subMsgMesh.visible = false;
         scene.add(subMsgMesh);
 
         createGalleryPoints();

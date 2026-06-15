@@ -362,16 +362,17 @@
         msgMesh.position.set(0, -58, 0); msgMesh.visible = false;
         scene.add(msgMesh);
 
-        // Subtitle: "Cảm ơn Ka Thy..."
+        // Subtitle: "đã là một ngoại lệ thật đặc biệt ♡"
         const subMc = document.createElement("canvas"); subMc.width = 1024; subMc.height = 160;
         const subCtx = subMc.getContext("2d");
-        subCtx.font = '700 36px "Dancing Script", cursive';
+        subCtx.font = '700 52px "Dancing Script", cursive';
         subCtx.textAlign = "center"; subCtx.fillStyle = "#88CCFF";
-        subCtx.fillText("đã là một ngoại lệ thật đặc biệt ♡", 512, 80);
+        subCtx.shadowColor = "#00AAFF"; subCtx.shadowBlur = 20;
+        subCtx.fillText("đã là một ngoại lệ thật đặc biệt ♡", 512, 100);
         const subTex = new THREE.CanvasTexture(subMc);
         const subMat = new THREE.MeshBasicMaterial({ map: subTex, transparent: true, blending: THREE.AdditiveBlending });
-        subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(70, 70 * 0.11), subMat);
-        subMsgMesh.position.set(0, -76, 0); subMsgMesh.visible = false;
+        subMsgMesh = new THREE.Mesh(new THREE.PlaneGeometry(78, 78 * 0.11), subMat);
+        subMsgMesh.position.set(0, -78, 0); subMsgMesh.visible = false;
         scene.add(subMsgMesh);
 
         createGalleryPoints();
