@@ -293,6 +293,7 @@ function playMagicIntro() {
 
     setTimeout(() => q1.classList.add('show'),  400);
     setTimeout(() => q2?.classList.add('show'), 1600);
+    setTimeout(() => window.dispatchEvent(new Event('music-early')), 2800);
     setTimeout(() => q3?.classList.add('show'), 2800);
     setTimeout(() => q4?.classList.add('show'), 4000);
     setTimeout(() => {

@@ -754,6 +754,17 @@
         renderer.autoClear = true;
     }
 
+    // ── Music (can start early, guarded against double-init) ──────
+    function startMusic() {
+        if (bgMusic) return;
+        bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0;
+        bgMusic.muted = true; bgMusic.currentTime = 59;
+        bgMusic.play().then(() => { bgMusic.muted = false; bgMusic.volume = 1.0; }).catch(() => {
+            document.addEventListener('click', () => { bgMusic.muted = false; bgMusic.play().catch(() => {}); }, { once: true });
+        });
+    }
+    window.addEventListener('music-early', startMusic);
+
     // ── Start ──────────────────────────────────────────────────────
     async function startSystem() {
         if (started) return; started = true;
@@ -761,12 +772,7 @@
         const btn = document.getElementById("btnStart");
         if (btn) btn.style.display = "none";
 
-        // Nhạc — play muted trước (Chrome cho phép), unmute ngay sau
-        if (!bgMusic) { bgMusic = new Audio(MUSIC_URL); bgMusic.loop = true; bgMusic.volume = 1.0; }
-        bgMusic.muted = true; bgMusic.currentTime = 59; // Bắt đầu từ 58s để bỏ phần intro yên tĩnh
-        bgMusic.play().then(() => { bgMusic.muted = false; bgMusic.volume = 1.0; }).catch(() => {
-            document.addEventListener('click', () => { bgMusic.muted = false; bgMusic.play().catch(() => {}); }, { once: true });
-        });
+        startMusic();
 
         // Fetch danh sách ảnh từ server, shuffle ngẫu nhiên
         let photos = [];
