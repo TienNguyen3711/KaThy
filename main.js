@@ -264,7 +264,7 @@ function replaceRightMedia(){
 // trigger reveal after brief shooting-star show
 window.addEventListener('load', ()=>{
   setTimeout(()=>{
-    revealDescriptiveText(`Ka Thyy - Chưa biết nhau nhiều,
+    revealDescriptiveText(`Ka Thy - Chưa biết nhau nhiều,
   nhưng mình nghĩ bạn xứng đáng có một thứ gì đó đặc biệt.
   And I have a special gift for you 😁`, 200);
   }, 3200);
